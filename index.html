@@ -92,13 +92,9 @@
 </div>
 
 <script>
-  // 💥 기존 코드를 이렇게 변경! (직접 키를 안 적고 config.js에서 불러옵니다)
+  // config.js에서 설정값 가져오기
   const BIN_ID = CONFIG.BIN_ID; 
   const MASTER_KEY = CONFIG.MASTER_KEY; 
-
-  let score = 0;
-  let timeLeft = 30;
-  // ... 이하 기존 자바스크립트 코드 전부 동일 ...
 
   let score = 0;
   let timeLeft = 30;
@@ -145,7 +141,6 @@
       if (timeLeft <= 0) endGame();
     }, 1000);
 
-    // ⚡ 생성 속도 단축 (기존 0.6초 -> 0.4초마다 등장)
     spawnInterval = setInterval(spawnRabbit, 400);
   }
 
@@ -162,17 +157,16 @@
     const typeRand = Math.random();
     let speed, points, color;
 
-    // ⚡ 이동/소멸 속도 더욱 가속!
     if (typeRand < 0.25) { 
-      speed = 0.45; // 0.45초 만에 사라지는 광속 토끼 (20점)
+      speed = 0.45; 
       points = 20; 
       color = '#ff4757'; 
     } else if (typeRand < 0.65) { 
-      speed = 0.8;  // 보통 (10점)
+      speed = 0.8;  
       points = 10; 
       color = '#ffa502'; 
     } else { 
-      speed = 1.2;  // 느림 (5점)
+      speed = 1.2;  
       points = 5; 
       color = '#2ed573'; 
     }
@@ -222,22 +216,18 @@
     await updateGlobalRanking(nickname, score);
   }
 
-  // 🌐 서버 전역 랭킹 불러오기 & 업데이트
   async function updateGlobalRanking(name, newScore) {
     try {
-      // 1. 현재 서버 저장 데이터 가져오기
       const getRes = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
         headers: { 'X-Master-Key': MASTER_KEY }
       });
       const getData = await getRes.json();
       let rankings = getData.record || [];
 
-      // 2. 새 점수 반영 후 상위 10개 정렬
       rankings.push({ name, score: newScore });
       rankings.sort((a, b) => b.score - a.score);
       rankings = rankings.slice(0, 10);
 
-      // 3. 서버에 수정된 랭킹 다시 저장
       await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
         method: 'PUT',
         headers: {
@@ -247,7 +237,6 @@
         body: JSON.stringify(rankings)
       });
 
-      // 4. 화면 출력
       renderRanking(rankings);
 
     } catch (err) {
