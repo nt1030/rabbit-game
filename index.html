@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>도이의 야매 토끼 잡기 게임</title>
+  <script src="config.js"></script>
   <style>
     * { box-sizing: border-box; user-select: none; -webkit-user-select: none; }
     body {
@@ -91,9 +92,13 @@
 </div>
 
 <script>
-  // 💥 [중요] 본인의 JSONBin 정보로 변경하세요 💥
-  const BIN_ID = '6a6ae6cada38895dfea2caff'; 
-  const MASTER_KEY = '$2a$10$bk2FsAR8hnd5lXGET6KmJ.fSYoollsOnUeisHNr6RrINPNvVutUX6'; 
+  // 💥 기존 코드를 이렇게 변경! (직접 키를 안 적고 config.js에서 불러옵니다)
+  const BIN_ID = CONFIG.BIN_ID; 
+  const MASTER_KEY = CONFIG.MASTER_KEY; 
+
+  let score = 0;
+  let timeLeft = 30;
+  // ... 이하 기존 자바스크립트 코드 전부 동일 ...
 
   let score = 0;
   let timeLeft = 30;
